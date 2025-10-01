@@ -10,7 +10,7 @@ Migrant workers often face difficulties in accessing consistent and affordable h
 To empower migrant workers with equal access to healthcare, while enabling doctors, policymakers, and NGOs to collaborate effectively using data-driven insights.
 
 
-CareYatra is an AI-powered healthcare platform designed to make healthcare faster, accessible, and inclusive for migrant workers in Kerala. It bridges the gap between patients, doctors, and government/NGOs by providing a unified digital ecosystem.
+CareYatra is an AI-powered healthcare platform designed to make healthcare faster, accessible, and inclusive for migrant workers in Kerala. It bridges the gap between patients, doctors, and government/NGOs by providing a unified digital ecosystem for further improvements.
 
 🚀 Key Features
 
@@ -28,7 +28,7 @@ CareYatra is an AI-powered healthcare platform designed to make healthcare faste
 
 🤝 Collaboration with Govt. & NGOs – Strengthening support for migrant workers through partnerships.
 
-🔒 Secure Login & Data Privacy – Ensuring trust and confidentiality of sensitive medical data.
+🔒 Secure Login & Data Privacy – Ensuring trust and confidentiality of sensitive medical data. 
 
 
 
