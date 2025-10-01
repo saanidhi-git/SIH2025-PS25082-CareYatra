@@ -1,0 +1,21 @@
+[
+    {
+        "from_id": "d1",
+        "from": "Doctor Sharma",
+        "to": "p1",
+        "date": "28-09-2025",
+        "time": "16:43",
+        "reason": "Knee Surgery",
+        "received_at": "28-09-2025 16:43:36"
+    },
+    {
+        "from_id": "p1",
+        "from": "Patient Rohan",
+        "to": "d1",
+        "date": "28-09-2025",
+        "time": "16:45",
+        "reason": "High Fever, Illness",
+        "received_at": "28-09-2025 16:44:21",
+        "priority": "Urgent"
+    }
+]

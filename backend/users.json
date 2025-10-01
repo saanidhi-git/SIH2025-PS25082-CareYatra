@@ -1,0 +1,22 @@
+{
+    "p1": {
+        "password": "p1",
+        "role": "patient"
+    },
+    "p3": {
+        "password": "p3p3pp3",
+        "role": "patient"
+    },
+    "raj": {
+        "password": "raj",
+        "role": "doctor"
+    },
+    "p5": {
+        "password": "p5",
+        "role": "patient"
+    },
+    "d5": {
+        "password": "d5",
+        "role": "doctor"
+    }
+}

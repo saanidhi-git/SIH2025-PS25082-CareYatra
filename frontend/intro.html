@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareYatra</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+        }
+        #intro-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 1;
+        }
+        .unmute-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            opacity: 1;
+            transition: opacity 1s ease-in-out;
+        }
+        .unmute-button {
+            padding: 15px 30px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            border-radius: 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .unmute-button:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <video id="intro-video" autoplay muted playsinline>
+        <source src="assets/1.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <div class="unmute-overlay" id="unmuteOverlay">
+        <button class="unmute-button" id="unmuteBtn">Unmute</button>
+    </div>
+
+    <script>
+        const video = document.getElementById('intro-video');
+        const unmuteBtn = document.getElementById('unmuteBtn');
+        const unmuteOverlay = document.getElementById('unmuteOverlay');
+
+        unmuteBtn.addEventListener('click', () => {
+            video.muted = false;
+            unmuteOverlay.style.opacity = '0';
+            setTimeout(() => {
+                unmuteOverlay.style.display = 'none';
+            }, 1000); // Wait for the fade out to finish
+        });
+
+        video.onended = function() {
+            document.body.style.transition = 'background-color 2s ease-in-out';
+            document.body.style.backgroundColor = 'transparent';
+            
+            setTimeout(() => {
+                document.body.style.opacity = '0';
+                setTimeout(() => {
+                    window.location.href = 'homepage.html';
+                }, 1000);
+            }, 500);
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+create a backend in pyton whcih is for the project this project is based on healthcare, it must have following structure
+
+1. login/sigin for pateint, doctor
+2. after sscuccessful login of pateint there should be following features
+    1.main home page of user it must have following option 
+        1. 'Emergency notify doctor,family'   
+        2. 'view new document' uploaded by doctor this must have list of document
+        3. 'upload new document' (in this option the pateint can upload his document from his device)
+
+
+        1.if chossed 'Em3ergency notify doctor,family' 
+            > this option 'Emergency notify doctor,family' , will also have another option in it whcih will help in adding the contact info of doctor, family member
+            > in this features the doctor mentioned in the option  will recive a notification about the Emergency, and same Emergency notification will also be sent to family member
+    
+        2. if chossed 'view new document uploaded by doctor' show the option as 1.Dentist, 2.Dermatology, etc
+            > if selected 'Dentist' > show document of Dentist,it must show the list of document
+            > if selected 'Dermatology' > show document of Dermatology, it must show the list, of document
+
+        3. if selected > 'upload document' - in this option the pateint can upload his document from his device
+           also add 'delete' option to delete the document from the list
+

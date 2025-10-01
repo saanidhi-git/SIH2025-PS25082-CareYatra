@@ -1,0 +1,656 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CareYatra Login</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #a0c4ff 0%, #bde0fe 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #3b4c68;
+        }
+
+        .card {
+            width: 420px;
+            background: linear-gradient(135deg, #f9dce0 0%, #e6d6f7 100%);
+            border-radius: 28px;
+            box-shadow: 0 6px 32px rgba(0, 0, 0, 0.08);
+            padding: 40px 44px 36px 44px;
+            box-sizing: border-box;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 40px;
+        }
+
+        .logo-img {
+            width: 220px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 1.1rem;
+            display: block;
+            color: #3b4c68;
+        }
+
+        select,
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #c3d9ec;
+            border-radius: 10px;
+            background: #fff;
+            color: #3b4c68;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .error-msg {
+            color: #d8000c;
+            font-weight: 600;
+            background: #fff0f3;
+            text-align: center;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 1rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 14px;
+        }
+
+        button {
+            flex: 1;
+            font-weight: 600;
+            font-size: 1.05rem;
+            border-radius: 12px;
+            padding: 12px 0;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: 'Nunito', sans-serif;
+            border: none;
+        }
+
+        button.primary {
+            background: linear-gradient(180deg, #f47c8a, #d45f82);
+            color: white;
+        }
+
+        button.primary:hover {
+            background: linear-gradient(180deg, #d45f82, #c24b6f);
+        }
+
+        button.outline {
+            background: white;
+            color: #3b4c68;
+            border: 2px solid #c3d9ec;
+        }
+
+        button.outline:hover {
+            background: #f0f6fc;
+        }
+
+        .captcha-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+        .captcha-image {
+            width: 150px;
+            height: 40px;
+            background-color: #f0f4f7;
+            border: 1px solid #c3d9ec;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #7f8c8d;
+        }
+        .captcha-input {
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="logo-container">
+            <img class="logo-img" src="assets/LOGO.png" alt="Care Yatra Logo">
+        </div>
+
+        <form id="loginForm">
+            <div>
+                <label for="userType">Login as:</label>
+                <select id="userType" required>
+                    <option>Patient</option>
+                    <option>Doctor</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="username" id="usernameLabel">Enter ABHA ID:</label>
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Enter your ABHA ID"
+                    autocomplete="username"
+                    required
+                />
+            </div>
+
+            <div>
+                <label for="password">Password:</label>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                />
+            </div>
+            
+            <div class="captcha-container">
+                <div class="captcha-image">
+                    <span id="captchaText">Loading...</span>
+                </div>
+                <button type="button" id="refreshCaptchaBtn" style="background: none; border: none; padding: 0; cursor: pointer;">
+                    <img src="assets/refresh.png" alt="Refresh CAPTCHA" style="width: 24px; height: 24px;">
+                </button>
+                <input
+                    type="text"
+                    id="captchaInput"
+                    class="captcha-input"
+                    placeholder="Enter CAPTCHA"
+                    required
+                />
+            </div>
+
+            <div id="errorMsg" class="error-msg" style="display:none;"></div>
+
+            <div class="button-group">
+                <button type="submit" id="submitBtn" class="primary">Login</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        (function() {
+            const loginForm = document.getElementById("loginForm");
+            const submitBtn = document.getElementById("submitBtn");
+            const errorMsgDiv = document.getElementById("errorMsg");
+            const userTypeSelect = document.getElementById("userType");
+            const usernameLabel = document.getElementById("usernameLabel");
+            const usernameInput = document.getElementById("username");
+            const passwordInput = document.getElementById("password");
+            const captchaInput = document.getElementById("captchaInput");
+            const captchaTextEl = document.getElementById("captchaText");
+            const refreshCaptchaBtn = document.getElementById("refreshCaptchaBtn");
+
+            function updateUsernameField() {
+                const selectedType = userTypeSelect.value;
+                if (selectedType === "Patient") {
+                    usernameLabel.textContent = "Enter ABHA ID:";
+                    usernameInput.placeholder = "Enter your ABHA ID";
+                } else {
+                    usernameLabel.textContent = "Enter HPR ID:";
+                    usernameInput.placeholder = "Enter your HPR ID";
+                }
+            }
+
+            async function fetchCaptcha() {
+                captchaTextEl.textContent = "Loading...";
+                try {
+                    const response = await fetch("/api/captcha");
+                    if (response.ok) {
+                        const data = await response.json();
+                        captchaTextEl.textContent = data.captcha_text;
+                    } else {
+                        captchaTextEl.textContent = "Error";
+                        console.error("Failed to fetch CAPTCHA.");
+                    }
+                } catch (error) {
+                    captchaTextEl.textContent = "Error";
+                    console.error("Failed to fetch CAPTCHA:", error);
+                }
+            }
+
+            // Initial load of CAPTCHA and username field
+            updateUsernameField();
+            fetchCaptcha();
+            
+            userTypeSelect.addEventListener("change", updateUsernameField);
+            refreshCaptchaBtn.addEventListener("click", fetchCaptcha);
+
+            loginForm.addEventListener("submit", async function(e) {
+                e.preventDefault();
+                errorMsgDiv.style.display = "none";
+                errorMsgDiv.textContent = "";
+
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value;
+                const userType = userTypeSelect.value;
+                const captcha = captchaInput.value;
+
+                submitBtn.textContent = "Logging in...";
+                submitBtn.disabled = true;
+
+                try {
+                    const response = await fetch("/api/login", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            username: username,
+                            password: password,
+                            userType: userType,
+                            captcha: captcha
+                        }),
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok && data.status === "success") {
+                        window.location.href = data.redirect_url;
+                    } else {
+                        errorMsgDiv.textContent = data.message || "Login failed. Please try again.";
+                        errorMsgDiv.style.display = "block";
+                        fetchCaptcha(); // Refresh CAPTCHA on failed login
+                    }
+                } catch (error) {
+                    console.error("Login failed:", error);
+                    errorMsgDiv.textContent = "An unexpected error occurred. Please try again later.";
+                    errorMsgDiv.style.display = "block";
+                } finally {
+                    submitBtn.textContent = "Login";
+                    submitBtn.disabled = false;
+                }
+            });
+        })();
+    </script>
+
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CareYatra Login</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #a0c4ff 0%, #bde0fe 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #3b4c68;
+        }
+
+        .card {
+            width: 420px;
+            background: linear-gradient(135deg, #f9dce0 0%, #e6d6f7 100%);
+            border-radius: 28px;
+            box-shadow: 0 6px 32px rgba(0, 0, 0, 0.08);
+            padding: 40px 44px 36px 44px;
+            box-sizing: border-box;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 40px;
+        }
+
+        .logo-img {
+            width: 220px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 1.1rem;
+            display: block;
+            color: #3b4c68;
+        }
+
+        select,
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #c3d9ec;
+            border-radius: 10px;
+            background: #fff;
+            color: #3b4c68;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .error-msg {
+            color: #d8000c;
+            font-weight: 600;
+            background: #fff0f3;
+            text-align: center;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 1rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 14px;
+        }
+
+        button {
+            flex: 1;
+            font-weight: 600;
+            font-size: 1.05rem;
+            border-radius: 12px;
+            padding: 12px 0;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: 'Nunito', sans-serif;
+            border: none;
+        }
+
+        button.primary {
+            background: linear-gradient(180deg, #f47c8a, #d45f82);
+            color: white;
+        }
+
+        button.primary:hover {
+            background: linear-gradient(180deg, #d45f82, #c24b6f);
+        }
+
+        button.outline {
+            background: white;
+            color: #3b4c68;
+            border: 2px solid #c3d9ec;
+        }
+
+        button.outline:hover {
+            background: #f0f6fc;
+        }
+
+        .captcha-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .captcha-image-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .captcha-image-container {
+            width: 150px;
+            height: 40px;
+            background-color: #f0f4f7;
+            border: 1px solid #c3d9ec;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .captcha-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .captcha-input-full {
+            width: 100%;
+        }
+        .captcha-input-field {
+            flex-grow: 1;
+        }
+        #refreshCaptchaBtn {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            color: #3b4c68;
+            font-size: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+        #refreshCaptchaBtn:hover {
+            transform: rotate(30deg);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="logo-container">
+            <img class="logo-img" src="assets/LOGO.png" alt="Care Yatra Logo">
+        </div>
+
+        <form id="loginForm">
+            <div>
+                <label for="userType">Login as:</label>
+                <select id="userType" required>
+                    <option>Patient</option>
+                    <option>Doctor</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="username" id="usernameLabel">Enter ABHA ID:</label>
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Enter your ABHA ID"
+                    autocomplete="username"
+                    required
+                />
+            </div>
+
+            <div>
+                <label for="password">Password:</label>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                />
+            </div>
+            
+            <div class="captcha-field">
+                <label for="captchaInput">Enter CAPTCHA:</label>
+                <div class="captcha-input-full">
+                    <div class="captcha-image-row">
+                        <div class="captcha-image-container">
+                            <span id="captchaPlaceholder" style="color:#3b4c68;">Loading...</span>
+                        </div>
+                        <button type="button" id="refreshCaptchaBtn" title="Refresh CAPTCHA">&#x21BB;</button>
+                    </div>
+                    <input
+                        type="text"
+                        id="captchaInput"
+                        class="captcha-input-field"
+                        placeholder="Enter the code above"
+                        required
+                        style="margin-top: 10px;"
+                    />
+                </div>
+            </div>
+
+            <div id="errorMsg" class="error-msg" style="display:none;"></div>
+
+            <div class="button-group">
+                <button type="submit" id="submitBtn" class="primary">Login</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        (function() {
+            const loginForm = document.getElementById("loginForm");
+            const submitBtn = document.getElementById("submitBtn");
+            const errorMsgDiv = document.getElementById("errorMsg");
+            const userTypeSelect = document.getElementById("userType");
+            const usernameLabel = document.getElementById("usernameLabel");
+            const usernameInput = document.getElementById("username");
+            const passwordInput = document.getElementById("password");
+            const captchaInput = document.getElementById("captchaInput");
+            const captchaContainer = document.querySelector(".captcha-image-container");
+            const captchaPlaceholder = document.getElementById("captchaPlaceholder");
+            const refreshCaptchaBtn = document.getElementById("refreshCaptchaBtn");
+
+            function updateUsernameField() {
+                const selectedType = userTypeSelect.value;
+                if (selectedType === "Patient") {
+                    usernameLabel.textContent = "Enter ABHA ID:";
+                    usernameInput.placeholder = "Enter your ABHA ID";
+                } else {
+                    usernameLabel.textContent = "Enter HPR ID:";
+                    usernameInput.placeholder = "Enter your HPR ID";
+                }
+            }
+            
+            // --- UPDATED CAPTCHA FETCH LOGIC ---
+            async function fetchCaptcha() {
+                captchaPlaceholder.style.display = 'block';
+                captchaPlaceholder.textContent = "Loading...";
+
+                try {
+                    // Fetch the CAPTCHA image URL and set a cache-busting parameter
+                    const captchaImageUrl = `/api/captcha?nocache=${new Date().getTime()}`;
+                    
+                    // 1. Remove the loading text/placeholder
+                    captchaPlaceholder.style.display = 'none';
+
+                    // 2. Check if an image already exists. If so, update its source.
+                    let captchaImage = captchaContainer.querySelector('img');
+
+                    if (!captchaImage) {
+                        // If no image exists, create a new one
+                        captchaImage = document.createElement('img');
+                        captchaImage.alt = "CAPTCHA Image";
+                        captchaContainer.appendChild(captchaImage);
+                    }
+
+                    // 3. Set the image source, which triggers the browser to fetch the image from the Flask route
+                    captchaImage.src = captchaImageUrl;
+
+                } catch (error) {
+                    captchaPlaceholder.style.display = 'block';
+                    captchaPlaceholder.textContent = "Error";
+                    console.error("Failed to fetch CAPTCHA:", error);
+                }
+            }
+            // --- END UPDATED CAPTCHA FETCH LOGIC ---
+
+
+            // Initial load of CAPTCHA and username field
+            updateUsernameField();
+            fetchCaptcha();
+            
+            userTypeSelect.addEventListener("change", updateUsernameField);
+            refreshCaptchaBtn.addEventListener("click", fetchCaptcha);
+
+            loginForm.addEventListener("submit", async function(e) {
+                e.preventDefault();
+                errorMsgDiv.style.display = "none";
+                errorMsgDiv.textContent = "";
+
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value;
+                const userType = userTypeSelect.value;
+                const captcha = captchaInput.value;
+
+                submitBtn.textContent = "Logging in...";
+                submitBtn.disabled = true;
+
+                try {
+                    const response = await fetch("/api/login", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            username: username,
+                            password: password,
+                            userType: userType,
+                            captcha: captcha
+                        }),
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok && data.status === "success") {
+                        window.location.href = data.redirect_url;
+                    } else {
+                        errorMsgDiv.textContent = data.message || "Login failed. Please try again.";
+                        errorMsgDiv.style.display = "block";
+                        fetchCaptcha(); // Refresh CAPTCHA on failed login
+                    }
+                } catch (error) {
+                    console.error("Login failed:", error);
+                    errorMsgDiv.textContent = "An unexpected error occurred. Please try again later.";
+                    errorMsgDiv.style.display = "block";
+                } finally {
+                    submitBtn.textContent = "Login";
+                    submitBtn.disabled = false;
+                }
+            });
+        })();
+    </script>
+
+</body>
+</html>
+
+
+

@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>CareYatra — Doctor Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Fredoka+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="doctordash.css" />
+</head>
+<body>
+    <div class="page-grid">
+        <aside class="sidebar">
+            <div class="logo">
+                <!-- Fallback image URL for Logo -->
+                <img src="assets/LOGO.png" onerror="this.src='https://placehold.co/180x50/bfb2e2/fff?text=CareYatra'" alt="CareYatra Logo" class="careyatra-logo" />
+                <div class="usertype">Usertype: <strong id="userType">Doctor</strong></div>
+            </div>
+            <div class="profile">
+                <div class="avatar">
+                    <!-- Fallback image URL for Doctor -->
+                    <img src="assets/doctor.png" onerror="this.src='https://placehold.co/100x120/bfb2e2/fff?text=Dr'" alt="Doctor" class="doctor-img" />
+                </div>
+                <div class="welcome">Welcome, Dr. <span id="welcomeName">[Doctor Name]</span></div>
+            </div>
+            <div class="sidebar-grid">
+                <button class="action-card" title="Notifications" data-view="notifications">
+                    <img src="assets/notification.png" onerror="this.src='https://placehold.co/52x52/9c79ae/fff?text=🔔'" alt="Notifications" />
+                </button>
+                <button class="action-card" title="Appointments" data-view="appointments">
+                    <img src="assets/appointments.png" onerror="this.src='https://placehold.co/52x52/9c79ae/fff?text=📅'" alt="Appointments" />
+                </button>
+                <button class="action-card" title="Upload Documents" data-view="addPatients">
+                    <img src="assets/patientdoc.png" onerror="this.src='https://placehold.co/52x52/9c79ae/fff?text=📂'" alt="Upload Documents" />
+                </button>
+                <button class="action-card" title="Graphical Insights" data-view="graphicalInsights">
+                    <img src="assets/graph.png" onerror="this.src='https://placehold.co/52x52/9c79ae/fff?text=📈'" alt="Insights" />
+                </button>
+            </div>
+            <div class="logout">
+                <button class="logout-btn">
+                    <img src="assets/logout.png" onerror="this.src='https://placehold.co/24x24/9c79ae/fff?text=🚪'" alt="Logout Icon" class="logout-icon" />
+                    LOG OUT
+                </button>
+            </div>
+        </aside>
+        <main class="main-area">
+            <section class="top-card">
+                <div class="top-icons">
+                    <div class="small-card">
+                        <img src="assets/profiledetails.png" onerror="this.src='https://placehold.co/60x60/9c79ae/fff?text=👤'" alt="Profile Details" class="profile-details"/>
+                    </div>
+                </div>
+                <h2 class="profile-title">Profile Details</h2>
+                
+            </section>
+            <section class="content-card">
+                <div id="addPatientsView" class="active-view">
+                    <h1 class="page-title">Add Patients</h1>
+                    <div class="split">
+                        <div class="panel left-panel">
+                            <h3 class="panel-title">My Patients</h3>
+                            <ul class="patient-list" id="patientList">
+                                <li>Loading patients...</li>
+                            </ul>
+                        </div>
+                        <div class="panel right-panel">
+                            <h3 class="panel-title">
+                                <img src="assets/addpatient.png" onerror="this.src='https://placehold.co/26x26/d08d94/fff?text=➕'" alt="Add Icon" class="title-icon" />
+                                Add New Patients
+                            </h3>
+                            <form id="addPatientForm" class="add-form" autocomplete="off">
+                                <input name="abha" id="abha" placeholder="Enter Abha ID" />
+                                <input name="name" id="name" placeholder="Enter Name" />
+                                <input name="dob" id="dob" placeholder="Enter DOB" 
+                                    onfocus="(this.type='date')" 
+                                    onblur="if(!this.value)this.type='text'" />
+                                <button type="submit" class="add-btn add-patient-btn">
+                                    <img src="assets/addpatient.png" onerror="this.src='https://placehold.co/16x16/fff/d97452?text=+'" alt="Add Icon" class="add-icon" />
+                                    Add
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div id="historyView" style="display: none;">
+                    <div class="panel">
+                        <h3 class="panel-title">Patient History</h3>
+                        <ul class="patient-list" id="historyList"></ul>
+                        <div class="form-actions">
+                            <button class="add-btn back-btn" onclick="goBackToAddPatients()">← Back</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="notificationsView" style="display: none;">
+                    <div class="panel">
+                        <h3 class="panel-title">Notifications</h3>
+                        <ul class="patient-list" id="notificationList"></ul>
+                        <div class="form-actions">
+                            <button class="add-btn back-btn" onclick="goBackToAddPatients()">← Back</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="appointmentsView" style="display: none;">
+                    <h3 class="panel-title">Schedule Appointment</h3>
+                    <div class="panel">
+                        <form id="appointmentForm" class="add-form appointment-form" autocomplete="off">
+                            <div class="form-group">
+                                <label for="patientName">Name:</label>
+                                <input name="patientName" id="patientName" placeholder="Enter Patient Name" />
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group half">
+                                    <label for="appointmentDate">Date:</label>
+                                    <input name="appointmentDate" id="appointmentDate" placeholder="Select Date"
+                                        onfocus="(this.type='date')" 
+                                        onblur="if(!this.value)this.type='text'" />
+                                </div>
+                                <div class="form-group half">
+                                    <label for="appointmentTime">Time:</label>
+                                    <input name="appointmentTime" id="appointmentTime" placeholder="Select Time"
+                                        onfocus="(this.type='time')" 
+                                        onblur="if(!this.value)this.type='text'" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="reason">Reason:</label>
+                                <input name="reason" id="reason" placeholder="Enter Reason" />
+                            </div>
+                            <div class="form-actions dual-buttons">
+                                <button type="button" class="add-btn back-btn" onclick="goBackToAddPatients()">← Back</button>
+                                <button type="submit" class="add-btn schedule-btn">
+                                    Schedule 
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- START NEW E-PRESCRIPTION VIEW -->
+                <div id="prescriptionView" style="display: none;">
+                    <h3 class="panel-title">
+                        <img src="assets/Epresciption.png" onerror="this.src='https://placehold.co/26x26/d08d94/fff?text=℞'" alt="Prescription Icon" class="title-icon" />
+                        New E-Prescription
+                    </h3>
+                    <div class="panel" style="min-height: 450px; background: #fcf4f4;">
+                        <form id="prescriptionForm" class="add-form appointment-form" autocomplete="off" style="gap: 12px;">
+                            <!-- Patient Selection -->
+                            <div class="form-group">
+                                <label for="prescribePatient">Prescribe For Patient (ABHA ID):</label>
+                                <input name="patientAbhaId" list="patientAbhaList" id="prescribePatient" placeholder="Select or type patient's ABHA ID" required />
+                                <datalist id="patientAbhaList">
+                                    <!-- Options will be populated via JS/backend later -->
+                                    <option value="P-9001">Rohan Sharma</option>
+                                    <option value="P-9002">Priya Singh</option>
+                                </datalist>
+                            </div>
+
+                            <!-- Diagnosis/Instructions -->
+                            <div class="form-group">
+                                <label for="diagnosis">Diagnosis / Instructions:</label>
+                                <input name="diagnosis" id="diagnosis" placeholder="e.g., Viral fever, take plenty of rest" required />
+                            </div>
+
+                            <!-- Medication Header -->
+                            <h4 style="margin: 10px 0 0; color:#d08d94; font-size:16px; font-weight:600; text-align:center;">Medication List</h4>
+                            
+                            <!-- Medication Repeater Container -->
+                            <div id="medicationContainer" style="overflow-y:auto; max-height:220px; padding: 0 5px;">
+                                <!-- Initial Medication row -->
+                                <div class="med-row" style="display:flex; gap:10px; margin-bottom:10px; align-items:flex-end;">
+                                    <div class="form-group" style="flex: 2;">
+                                        <label>Name:</label>
+                                        <input type="text" name="medName[]" placeholder="e.g., Paracetamol 500mg" required/>
+                                    </div>
+                                    <div class="form-group" style="flex: 1;">
+                                        <label>Dosage:</label>
+                                        <input type="text" name="dosage[]" placeholder="e.g., 1-1-1" required/>
+                                    </div>
+                                    <div class="form-group" style="flex: 2;">
+                                        <label>Details (if any):</label>
+                                        <input type="text" name="details[]" placeholder="e.g., After Meal" required/>
+                                    </div>
+                                    <button type="button" class="remove-med-btn" style="background:#d97452; color:white; border:none; padding:10px 14px; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="removeMedicationRow(this)">X</button>
+                                </div>
+                            </div>
+                            
+                            <div style="text-align: center; margin-top: 10px;">
+                                <button type="button" onclick="addMedicationRow()" class="add-btn" style="background: #9c79ae; padding: 8px 18px; font-size: 14px;">+ Add Medication</button>
+                            </div>
+
+                            <div class="form-actions dual-buttons">
+                                <button type="button" class="add-btn back-btn" onclick="goBackToAddPatients()">← Back</button>
+                                <button type="submit" class="add-btn schedule-btn" style="background: #d97452;">
+                                    Finalize Prescription 
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- END NEW E-PRESCRIPTION VIEW -->
+
+                <div id="graphicalInsightsView" style="display: none;">
+                    <h3 class="panel-title">View Graphical Insights</h3>
+                    <div class="panel">
+                        <div id="chartTitleBox" style="background: #fff; border-radius: 12px; padding: 12px 18px; margin-bottom: 16px; font-weight: 600; font-size: 16px; color: #566785; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+                            Loading chart title...
+                        </div>
+                        <div class="chart-placeholder" style="height: 300px; background: #fff; border-radius: 12px; border: 2px dashed #d08d94; display: flex; align-items: center; justify-content: center; color: #9aa6b6; font-size: 16px;">
+                            Chart will appear here after backend integration
+                        </div>
+                        <div class="form-actions" style="margin-top: 20px;">
+                            <button class="add-btn" onclick="goBackToAddPatients()">← Back</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="abha-logo-container">
+                <img src="assets/Abha AI.png" onerror="this.src='https://placehold.co/80x80/d97452/fff?text=AI'" alt="ABHA AI Logo" class="abha-logo" />
+            </div>
+        </main>
+    </div>
+    <div id="popupModal" class="popup-overlay">
+        <div class="popup-window">
+            <button class="close-popup" onclick="closePopup()">✖</button>
+            <div class="popup-options-row">
+                <!-- Card 1: Upload Documents -->
+                <div class="popup-card" onclick="triggerFileUpload()">
+                    <div class="popup-icon-box">
+                        <img src="assets/upload.png" onerror="this.src='https://placehold.co/64x64/9c79ae/fff?text=⬆'" alt="Upload Documents" />
+                    </div>
+                    <span class="popup-label">Upload Documents</span>
+                    <input type="file" id="fileInput" style="display: none;" />
+                </div>
+                
+                <!-- Card 2: Generate Prescription -->
+                <div class="popup-card" onclick="handlePrescription()">
+                    <div class="popup-icon-box">
+                        <img src="assets/Epresciption.png" onerror="this.src='https://placehold.co/64x64/9c79ae/fff?text=℞'" alt="Generate Prescription" />
+                    </div>
+                    <span class="popup-label">Generate Prescription</span>
+                </div>
+
+                <!-- Card 3: View History -->
+                <div class="popup-card" onclick="handleHistory()">
+                    <div class="popup-icon-box">
+                        <img src="assets/viewhistory.png" onerror="this.src='https://placehold.co/64x64/9c79ae/fff?text=📜'" alt="View History" />
+                    </div>
+                    <span class="popup-label">View History</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="abhaChatWindow" class="chatbot-overlay">
+        <div class="chatbot-window">
+            <div class="chatbot-header">
+                <div class="chatbot-title">
+                    <img src="assets/Abha AI.png" onerror="this.src='https://placehold.co/24x24/d97452/fff?text=AI'" alt="ABHA Logo" class="chatbot-header-logo" />
+                    <span>ABHA AI</span>
+                </div>
+                <button class="chatbot-close" onclick="closeAbhaChat()">✖</button>
+            </div>
+            <div class="chatbot-body" id="chatBody">
+                <div class="bot-message" id="chatGreeting">Hi 👋<br>How can I assist you today?</div>
+            </div>
+            <div class="chatbot-input-row">
+                <img src="assets/Abha AI.png" onerror="this.src='https://placehold.co/28x28/d97452/fff?text=AI'" alt="ABHA Logo" class="chatbot-logo" />
+                <input type="text" id="chatInput" placeholder="Summarize report or ask a medical query..." />
+                <button class="chatbot-send" onclick="sendMessage()">➤</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

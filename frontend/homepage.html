@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareYatra - Digital Health Record Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #A2C4F7;
+            --secondary-pink: #F7A2C4;
+            --text-dark: #333;
+            --button-bg: #89CFF0;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-image: linear-gradient(135deg, var(--primary-blue), var(--secondary-pink));
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        .navbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo img {
+            height: 60px;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-dark);
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 400;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-blue);
+        }
+
+        .language-selector select {
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            background-color: var(--card-bg);
+            color: var(--text-dark);
+            margin-left: 15px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--text-dark);
+            padding-top: 80px;
+            background-image: url('placeholder-hero-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(162, 196, 247, 0.8), rgba(247, 162, 196, 0.8));
+        }
+
+        .hero-text {
+            position: relative;
+            z-index: 10;
+            padding: 0 5%;
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        .hero-text .hero-logo {
+            height: 100px;
+            margin-bottom: 20px;
+        }
+
+        .hero-text h2 {
+            font-size: 1.5em;
+            font-weight: 300;
+            margin-bottom: 2em;
+        }
+
+        .cta-button {
+            padding: 25px 50px;
+            background-color: var(--button-bg);
+            color: var(--text-dark);
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.5em;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            background-color: #5bb2d9;
+        }
+
+        .content-section {
+            padding: 80px 5%;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            opacity: 0;
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        
+        .slide-in-left {
+            transform: translateX(-50px);
+        }
+        
+        .slide-in-right {
+            transform: translateX(50px);
+        }
+        
+        .is-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        #mission_text, .sdg-item p {
+            font-size: 1.2em;
+        }
+
+        .sdg-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        
+        .sdg-icons img {
+            height: 80px;
+        }
+        
+        .sdg-item p {
+            font-weight: 600;
+            margin-top: 10px;
+            color: var(--text-dark);
+        }
+
+        .content-section h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .feature-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .feature-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon-circle {
+            background-color: var(--secondary-pink);
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 15px;
+        }
+        
+        .feature-icon-circle img {
+            width: 60px;
+            height: 60px;
+        }
+
+        .feature-card h4 {
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .steps-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+        
+        .step-card h4, .step-card p {
+            font-size: 1.2em; /* Consistent font size for how it works section */
+        }
+
+        .step-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            width: 300px;
+            position: relative;
+            padding-top: 50px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+        
+        .step-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .step-number {
+            background-color: var(--secondary-pink);
+            color: var(--text-dark);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            font-weight: 600;
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 100px 5%;
+        }
+        
+        .cta-section h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5em;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+        
+        .cta-section p {
+            font-size: 1.2em;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--primary-blue);
+            color: var(--text-dark);
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 10px 5%;
+            }
+            .nav-links {
+                margin-top: 10px;
+                flex-direction: column;
+            }
+            .nav-links a {
+                margin: 5px 0;
+            }
+            .hero-text h1 {
+                font-size: 2.5em;
+            }
+            .hero-text h2 {
+                font-size: 1em;
+            }
+            .feature-grid, .steps-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <img src="assets/LOGO.png" alt="CareYatra Logo">
+        </div>
+        <nav class="nav-links">
+            <a href="#mission" id="nav_mission">Our Mission</a>
+            <a href="#features" id="nav_features">Features</a>
+            <a href="#how-it-works" id="nav_how_it_works">How It Works</a>
+            <a href="#contact" id="nav_contact">Contact Us</a>
+        </nav>
+        <div class="language-selector">
+            <select id="language-switch">
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+                <option value="ml">Malayalam</option>
+            </select>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="hero-section">
+            <div class="hero-text">
+                <img src="assets/LOGO.png" alt="CareYatra Logo" class="hero-logo">
+                <h2 id="hero_h2">Bridging the healthcare gap for migrant workers in Kerala.</h2>
+            </div>
+        </section>
+
+        <section id="mission" class="content-section slide-in-left">
+            <h3 id="mission_title">Our Mission</h3>
+            <p id="mission_text">CareYatra is a dedicated digital health record system designed to ensure fair and impartial healthcare access for Kerala's migrant population. By providing a comprehensive health record system, we support public health surveillance, prevent disease transmission, and align with the Sustainable Development Goals (SDGs).</p>
+        </section>
+        
+        <section id="sdg-commitment" class="content-section slide-in-right">
+            <h3 id="sdg_title">Our Commitment</h3>
+            <div class="sdg-icons">
+                <div class="sdg-item">
+                    
+                    <p id="sdg3_text">Good Health and Well-being</p>
+                </div>
+                <div class="sdg-item">
+                    
+                    <p id="sdg10_text">Reduced Inequalities</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="content-section slide-in-left">
+            <h3 id="features_title">Key Features</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon-circle">
+                        <img src="assets/mic.png" alt="Voice Assistance Icon">
+                    </div>
+                    <h4 id="feature1_title">Multilingual Voice-Based Assistance</h4>
+                    <p id="feature1_text">Communicate seamlessly in your native language for hassle-free care.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-circle">
+                        <img src="assets/location.png" alt="Real-time Mapping Icon">
+                    </div>
+                    <h4 id="feature2_title">Real-Time Zone Mapping & Monitoring</h4>
+                    <p id="feature2_text">Monitor health trends and disease outbreaks in real-time.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-circle">
+                        <img src="assets/healthcare.png" alt="Digital Health Record - All in one platform">
+                    </div>
+                    <h4 id="feature3_title">Digital Health Record - All in one platform</h4>
+                    <p id="feature3_text">Securely store and access your medical history anytime, anywhere.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="how-it-works" class="content-section slide-in-right">
+            <h3 id="how_it_works_title">How It Works</h3>
+            <div class="steps-container">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h4 id="step1_title">Register</h4>
+                    <p id="step1_text">Register with your ABHA ID or HPR ID to create your digital health profile.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h4 id="step2_title">Consult</h4>
+                    <p id="step2_text">Share your digital records with doctors for seamless consultation.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h4 id="step3_title">Track</h4>
+                    <p id="step3_text">Easily monitor your health history and medical reports.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="cta-section" class="cta-section slide-in-left">
+            <h3 id="cta_title">Ready to get started?</h3>
+            <p id="cta_text">Join CareYatra today and take control of your health journey.</p>
+            <a href="loginpage.html" class="cta-button" id="get_started_btn_cta">Get Started</a>
+        </section>
+
+        <section id="contact" class="content-section slide-in-right">
+            <h3 id="contact_title">Contact Us</h3>
+            <p id="contact_text">For more information or support, please feel free to reach out to our team.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p id="footer_text">&copy; 2025 CareYatra. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const langSwitch = document.getElementById('language-switch');
+            
+            const translations = {
+                'en': {
+                    'nav_mission': 'Our Mission',
+                    'nav_features': 'Features',
+                    'nav_how_it_works': 'How It Works',
+                    'nav_contact': 'Contact Us',
+                    'hero_h2': 'Bridging the healthcare gap for migrant workers in Kerala.',
+                    'mission_title': 'Our Mission',
+                    'mission_text': 'CareYatra is a dedicated digital health record system designed to ensure fair and impartial healthcare access for Kerala\'s migrant population. By providing a comprehensive health record system, we support public health surveillance, prevent disease transmission, and align with the Sustainable Development Goals (SDGs).',
+                    'sdg_title': 'Our Commitment',
+                    'sdg3_text': 'Good Health and Well-being',
+                    'sdg10_text': 'Reduced Inequalities',
+                    'features_title': 'Key Features',
+                    'feature1_title': 'Multilingual Voice-Based Assistance',
+                    'feature1_text': 'Communicate seamlessly in your native language for hassle-free care.',
+                    'feature2_title': 'Real-Time Zone Mapping & Monitoring',
+                    'feature2_text': 'Monitor health trends and disease outbreaks in real-time.',
+                    'feature3_title': 'Digital Health Record - All in one platform',
+                    'feature3_text': 'Securely store and access your medical history anytime, anywhere.',
+                    'how_it_works_title': 'How It Works',
+                    'step1_title': 'Register',
+                    'step1_text': 'Register with your ABHA ID or HPR ID to create your digital health profile.',
+                    'step2_title': 'Consult',
+                    'step2_text': 'Share your digital records with doctors for seamless consultation.',
+                    'step3_title': 'Track',
+                    'step3_text': 'Easily monitor your health history and medical reports.',
+                    'contact_title': 'Contact Us',
+                    'contact_text': 'For more information or support, please feel free to reach out to our team.',
+                    'cta_title': 'Ready to get started?',
+                    'cta_text': 'Join CareYatra today and take control of your health journey.',
+                    'get_started_btn_cta': 'Get Started',
+                    'footer_text': '© 2025 CareYatra. All rights reserved.'
+                },
+                'hi': {
+                    'nav_mission': 'हमारा मिशन',
+                    'nav_features': 'विशेषताएं',
+                    'nav_how_it_works': 'यह कैसे काम करता है',
+                    'nav_contact': 'संपर्क करें',
+                    'hero_h2': 'केरल में प्रवासी श्रमिकों के लिए स्वास्थ्य सेवा के अंतर को भरना।',
+                    'mission_title': 'हमारी प्रतिबद्धता',
+                    'mission_text': 'केयरयात्रा एक समर्पित डिजिटल स्वास्थ्य रिकॉर्ड प्रणाली है जिसे केरल में प्रवासी आबादी के लिए निष्पक्ष और निष्पक्ष स्वास्थ्य सेवा सुनिश्चित करने के लिए डिज़ाइन किया गया है। एक व्यापक स्वास्थ्य रिकॉर्ड प्रणाली प्रदान करके, हम सार्वजनिक स्वास्थ्य निगरानी का समर्थन करते हैं, रोग संचरण को रोकते हैं, और सतत विकास लक्ष्यों (एसडीजी) के साथ संरेखित करते हैं।',
+                    'sdg_title': 'हमारी प्रतिबद्धता',
+                    'sdg3_text': 'अच्छा स्वास्थ्य और कल्याण',
+                    'sdg10_text': 'घटी हुई असमानताएं',
+                    'features_title': 'मुख्य विशेषताएँ',
+                    'feature1_title': 'बहुभाषी आवाज-आधारित सहायता',
+                    'feature1_text': 'परेशानी-मुक्त देखभाल के लिए अपनी मूल भाषा में निर्बाध रूप से संवाद करें।',
+                    'feature2_title': 'वास्तविक समय क्षेत्र मानचित्रण और निगरानी',
+                    'feature2_text': 'स्वास्थ्य प्रवृत्तियों और रोग के प्रकोप को वास्तविक समय में मॉनिटर करें।',
+                    'feature3_title': 'डिजिटल स्वास्थ्य रिकॉर्ड - एक ही मंच में',
+                    'feature3_text': 'अपने चिकित्सा इतिहास को कभी भी, कहीं भी सुरक्षित रूप से संग्रहीत और एक्सेस करें।',
+                    'how_it_works_title': 'यह कैसे काम करता है',
+                    'step1_title': 'रजिस्टर करें',
+                    'step1_text': 'अपने ABHA ID या HPR ID के साथ रजिस्टर करके अपना डिजिटल स्वास्थ्य प्रोफ़ाइल बनाएं।',
+                    'step2_title': 'परामर्श करें',
+                    'step2_text': 'निर्बाध परामर्श के लिए डॉक्टरों के साथ अपने डिजिटल रिकॉर्ड साझा करें।',
+                    'step3_title': 'ट्रैक करें',
+                    'step3_text': 'अपने स्वास्थ्य इतिहास और चिकित्सा रिपोर्ट को आसानी से मॉनिटर करें।',
+                    'contact_title': 'संपर्क करें',
+                    'contact_text': 'अधिक जानकारी या समर्थन के लिए, कृपया हमारी टीम से संपर्क करने में संकोच न करें।',
+                    'cta_title': 'शुरू करने के लिए तैयार हैं?',
+                    'cta_text': 'केयरयात्रा से आज ही जुड़ें और अपनी स्वास्थ्य यात्रा को नियंत्रित करें।',
+                    'get_started_btn_cta': 'शुरू करें',
+                    'footer_text': '© 2025 केयरयात्रा। सर्वाधिकार सुरक्षित।'
+                },
+                'ml': {
+                    'nav_mission': 'ഞങ്ങളുടെ ദൗത്യം',
+                    'nav_features': 'സവിശേഷതകൾ',
+                    'nav_how_it_works': 'ഇത് എങ്ങനെ പ്രവർത്തിക്കുന്നു',
+                    'nav_contact': 'ഞങ്ങളെ സമീപിക്കുക',
+                    'hero_h2': 'കേരളത്തിലെ കുടിയേറ്റ തൊഴിലാളികൾക്കുള്ള ആരോഗ്യ സംരക്ഷണ വിടവ് നികത്തുന്നു.',
+                    'mission_title': 'ഞങ്ങളുടെ ദൗത്യം',
+                    'mission_text': 'കേരളത്തിലെ കുടിയേറ്റക്കാർക്ക് നീതിയും നിഷ്പക്ഷവുമായ ആരോഗ്യ സംരക്ഷണം ഉറപ്പാക്കാൻ രൂപകൽപ്പന ചെയ്ത ഒരു സമർപ്പിത ഡിജിറ്റൽ ആരോഗ്യ റെക്കോർഡ് സംവിധാനമാണ് കെയർയാത്ര. സമഗ്രമായ ആരോഗ്യ റെക്കോർഡ് സിസ്റ്റം നൽകുന്നതിലൂടെ, ഞങ്ങൾ പൊതുജനാരോഗ്യ നിരീക്ഷണത്തെ പിന്തുണയ്ക്കുന്നു, രോഗപ്പകർച്ച തടയുന്നു, കൂടാതെ സുസ്ഥിര വികസന ലക്ഷ്യങ്ങളുമായി (എസ്ഡിജി) യോജിക്കുന്നു.',
+                    'sdg_title': 'ഞങ്ങളുടെ പ്രതിബദ്ധത',
+                    'sdg3_text': 'നല്ല ആരോഗ്യവും ക്ഷേമവും',
+                    'sdg10_text': 'കുറഞ്ഞ അസമത്വങ്ങൾ',
+                    'features_title': 'പ്രധാന സവിശേഷതകൾ',
+                    'feature1_title': 'ബഹുഭാഷാ ശബ്ദ-അധിഷ്ഠിത സഹായം',
+                    'feature1_text': 'തടസ്സങ്ങളില്ലാത്ത പരിചരണത്തിനായി നിങ്ങളുടെ മാതൃഭാഷയിൽ പരിധിയില്ലാതെ ആശയവിനിമയം നടത്തുക.',
+                    'feature2_title': 'തത്സമയ സോൺ മാപ്പിംഗ് & നിരീക്ഷണം',
+                    'feature2_text': 'ആരോഗ്യ പ്രവണതകളും രോഗ പൊട്ടിപ്പുറപ്പെടലുകളും തത്സമയം നിരീക്ഷിക്കുക.',
+                    'feature3_title': 'ഡിജിറ്റൽ ആരോഗ്യ രേഖ - എല്ലാം ഒരു പ്ലാറ്റ്‌ഫോമിൽ',
+                    'feature3_text': 'നിങ്ങളുടെ മെഡിക്കൽ ചരിത്രം എപ്പോൾ വേണമെങ്കിലും എവിടെയും സുരക്ഷിതമായി സംഭരിക്കുകയും ആക്സസ് ചെയ്യുകയും ചെയ്യുക.',
+                    'how_it_works_title': 'ഇത് എങ്ങനെ പ്രവർത്തിക്കുന്നു',
+                    'step1_title': 'രജിസ്റ്റർ ചെയ്യുക',
+                    'step1_text': 'നിങ്ങളുടെ ABHA ID അല്ലെങ്കിൽ HPR ID ഉപയോഗിച്ച് രജിസ്റ്റർ ചെയ്ത് നിങ്ങളുടെ ഡിജിറ്റൽ ഹെൽത്ത് പ്രൊഫൈൽ സൃഷ്ടിക്കുക.',
+                    'step2_title': 'ഡോക്ടറെ കാണുക',
+                    'step2_text': 'തടസ്സങ്ങളില്ലാത്ത കൺസൾട്ടേഷനായി നിങ്ങളുടെ ഡിജിറ്റൽ രേഖകൾ ഡോക്ടർമാരുമായി പങ്കിടുക.',
+                    'step3_title': 'ട്രാക്ക് ചെയ്യുക',
+                    'step3_text': 'നിങ്ങളുടെ ആരോഗ്യ ചരിത്രവും മെഡിക്കൽ റിപ്പോർട്ടുകളും എളുപ്പത്തിൽ നിരീക്ഷിക്കുക.',
+                    'contact_title': 'ഞങ്ങളെ സമീപിക്കുക',
+                    'contact_text': 'കൂടുതൽ വിവരങ്ങൾക്കും പിന്തുണയ്ക്കും ഞങ്ങളുടെ ടീമുമായി ബന്ധപ്പെടാൻ മടിക്കരുത്.',
+                    'cta_title': 'തുടങ്ങാൻ തയ്യാറാണോ?',
+                    'cta_text': 'ഇന്ന് തന്നെ കെയർയാത്രയിൽ ചേരൂ, നിങ്ങളുടെ ആരോഗ്യ യാത്രയുടെ നിയന്ത്രണം ഏറ്റെടുക്കൂ.',
+                    'get_started_btn_cta': 'തുടങ്ങുക',
+                    'footer_text': '© 2025 കെയർയാത്ര. എല്ലാ അവകാശങ്ങളും നിക്ഷിപ്തം.'
+                }
+            };
+
+            function updateContent(lang) {
+                const elementsToTranslate = {
+                    'nav_mission': 'nav_mission',
+                    'nav_features': 'nav_features',
+                    'nav_how_it_works': 'nav_how_it_works',
+                    'nav_contact': 'nav_contact',
+                    'hero_h2': 'hero_h2',
+                    'mission_title': 'mission_title',
+                    'mission_text': 'mission_text',
+                    'sdg_title': 'sdg_title',
+                    'sdg3_text': 'sdg3_text',
+                    'sdg10_text': 'sdg10_text',
+                    'features_title': 'features_title',
+                    'feature1_title': 'feature1_title',
+                    'feature1_text': 'feature1_text',
+                    'feature2_title': 'feature2_title',
+                    'feature2_text': 'feature2_text',
+                    'feature3_title': 'feature3_title',
+                    'feature3_text': 'feature3_text',
+                    'how_it_works_title': 'how_it_works_title',
+                    'step1_title': 'step1_title',
+                    'step1_text': 'step1_text',
+                    'step2_title': 'step2_title',
+                    'step2_text': 'step2_text',
+                    'step3_title': 'step3_title',
+                    'step3_text': 'step3_text',
+                    'contact_title': 'contact_title',
+                    'contact_text': 'contact_text',
+                    'cta_title': 'cta_title',
+                    'cta_text': 'cta_text',
+                    'get_started_btn_cta': 'get_started_btn_cta',
+                    'footer_text': 'footer_text'
+                };
+
+                for (const key in elementsToTranslate) {
+                    const elementId = elementsToTranslate[key];
+                    const element = document.getElementById(elementId);
+                    if (element && translations[lang][key]) {
+                        element.textContent = translations[lang][key];
+                    }
+                }
+            }
+
+            langSwitch.addEventListener('change', (event) => {
+                updateContent(event.target.value);
+            });
+
+            const scrollSections = document.querySelectorAll('.content-section, .cta-section');
+
+            const observerOptions = {
+                root: null,
+                threshold: 0.2,
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, observerOptions);
+
+            scrollSections.forEach(section => {
+                observer.observe(section);
+            });
+
+            updateContent('en');
+        });
+    </script>
+</body>
+</html>

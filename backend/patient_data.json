@@ -1,0 +1,39 @@
+{
+    "patient_name": "John Doe",
+    "dob": "1990-01-01",
+    "blood_group": "O+",
+    "weight": "70kg",
+    "height": "175cm",
+    "allergies": [
+        "Penicillin"
+    ],
+    "current_medications": [
+        {
+            "name": "Metformin",
+            "for": "Diabetes",
+            "dosage": "500mg daily"
+        }
+    ],
+    "medical_history": [
+        "Type 2 Diabetes",
+        "Hypertension"
+    ],
+    "prescriptions": [
+        {
+            "date": "2024-01-15",
+            "reason": "Regular Checkup",
+            "doctor": {
+                "name": "Dr. Smith",
+                "speciality": "Endocrinologist"
+            },
+            "injections": [
+                "Insulin - 5 units"
+            ],
+            "medications": [
+                "Metformin 500mg",
+                "Aspirin 75mg"
+            ]
+        }
+    ],
+    "messages": []
+}
